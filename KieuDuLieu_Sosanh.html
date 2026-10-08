@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*Cú pháp nền tảng & Hệ thống kiểu dữ liệu*/
+        
+        // //Primitive Types (Kiểu nguyên thủy – Sao chép giá trị)
+        // // Demo sao chép giá trị (Copy by Value)
+        // let a = 10;
+        // let b = a; // b nhận bản sao của a với giá trị 10
+
+        // b = 20;    // Thay đổi b
+        // console.log(a); // 10 (a không bị ảnh hưởng)
+        // console.log(b); // 20
+
+        // // Demo null vs undefined
+        // let score;
+        // console.log(score); // undefined (chưa gán)
+
+        // let selectedProduct = null;
+        // console.log(selectedProduct); // null (chủ động đánh dấu chưa chọn sản phẩm nào)
+
+        // //Reference Types (Kiểu tham chiếu – Tham chiếu đến cùng một vùng nhớ)
+        // // Demo sao chép tham chiếu (Copy by Reference)
+        // const user1 = { id: 1, name: "Nam" };
+        // const user2 = user1; // user2 trỏ chung ô nhớ với user1
+
+        // user2.name = "Bình"; // Sửa dữ liệu qua user2
+
+        // console.log(user1.name); // "Bình" -> user1 cũng bị đổi!
+        // console.log(user2.name); // "Bình"
+
+        // // Tương tự với Mảng (Array)
+        // const scores1 = [8, 9, 10];
+        // const scores2 = scores1;
+        // scores2.push(7);
+
+        // console.log(scores1); // [8, 9, 10, 7] -> Cả hai mảng cùng thay đổi
+        // console.log(scores2); // [8, 9, 10, 7]
+
+
+        //So sánh bằng: Tuyệt đối(===) vs Ép kiểu ngầm(==)
+        //Toán tử == (Loose Equality – Bẫy ép kiểu ngầm định)
+        /*Khi hai vế khác kiểu dữ liệu, == sẽ tự động chuyển đổi kiểu(Type Coercion) về cùng một kiểu rồi mới so sánh.
+        Quy tắc ép kiểu này rất phức tạp và tạo ra các kết quả phản trực giác:*/
+        // console.log(5 == "5");       // true  (Chuỗi "5" bị ép thành số 5)
+        // console.log(0 == "");        // true  (Chuỗi rỗng "" bị ép thành số 0)
+        // console.log(0 == false);     // true  (false bị ép thành số 0)
+        // console.log(null == undefined); // true (Quy ước đặc biệt của JS)
+
+        /*
+        Toán tử === (Strict Equality – So sánh tuyệt đối)
+       === kiểm tra cả Kiểu dữ liệu lẫn Giá trị. Nếu khác kiểu, kết quả lập tức là false mà không ép kiểu ngầm.
+        */
+        // console.log(5 === "5");      // false (number khác string)
+        // console.log(0 === "");       // false (number khác string)
+        // console.log(0 === false);    // false (number khác boolean)
+        // console.log(null === undefined); // false (object khác undefined)
+
+        // // Chỉ true khi giống hệt cả kiểu lẫn giá trị
+        // console.log(5 === 5);        // true
+        // console.log("admin" === "admin"); // true
+
+        /*Toán tử so sánh (== hoặc ===) khi áp dụng lên Object hoặc Array sẽ so sánh địa chỉ bộ nhớ,
+         hoàn toàn không so sánh nội dung bên trong.
+         Luôn dùng === (và !==) cho mọi phép so sánh giá trị nguyên thủy.
+         Không dùng === để kiểm tra hai Object hay hai Array có "nội dung giống nhau" hay không.
+         */
+        // const objA = { id: 1 };
+        // const objB = { id: 1 };
+
+        // // Hai object có thuộc tính giống hệt nhau nhưng nằm ở 2 ô nhớ khác nhau
+        // console.log(objA === objB); // false
+        // console.log([] === []);     // false (Hai mảng rỗng tạo ra ở 2 ô nhớ khác nhau)
+
+        // // Chỉ true khi cả hai biến cùng trỏ vào một ô nhớ
+        // const objC = objA;
+        // console.log(objA === objC); // true
+
+        //a. Câu lệnh if / else và cơ chế Truthy / Falsy
+        // const username = ""; // Falsy
+
+        // if (username) {
+        //     console.log(`Xin chào, ${username}`);
+        // } else {
+        //     console.log("Vui lòng nhập tên người dùng!"); // Nhánh này được chạy
+        // }
+
+        // // Cạm bẫy với lập trình viên C#: Mảng rỗng trong JS vẫn là Truthy
+        // const cartItems = [];
+        // if (cartItems) {
+        //     // Đoạn này VẪN CHẠY dù mảng không có phần tử nào
+        //     console.log("Giỏ hàng tồn tại (nhưng chưa chắc có item)");
+        // }
+
+        // // Cách kiểm tra đúng khi mảng rỗng:
+        // if (cartItems.length > 0) {
+        //     console.log("Có sản phẩm trong giỏ");
+        // }
+
+        /*b. Câu lệnh switch / case*/
+        // const role = "admin";
+        //     switch (role) {
+        //         case "admin":
+        //             console.log("Toàn quyền hệ thống");
+        //             break;
+        //         case "editor":
+        //             console.log("Chỉ có quyền chỉnh sửa bài viết");
+        //             break;
+        //         case "viewer":
+        //             console.log("Chỉ có quyền xem");
+        //             break;
+        //         default:
+        //             console.log("Vai trò không hợp lệ");
+        //     }
+
+        /*c. Toán tử 3 ngôi (Ternary Operator)*/
+        // const isAuthenticated = true;
+
+        // // 1. Gán giá trị trực tiếp cho biến dựa trên điều kiện
+        // const buttonLabel = isAuthenticated ? "Đăng xuất" : "Đăng nhập";
+        // console.log(buttonLabel); // "Đăng xuất"
+
+        // // 2. Định dạng chuỗi hiển thị
+        // const score = 85;
+        // const message = `Kết quả: ${score >= 50 ? "Đạt" : "Trượt"}`;
+        // console.log(message); // "Kết quả: Đạt"
+
+        /*Khai báo hàm: Function Declaration vs Function Expression.*/
+        /*a. Function Declaration (Khai báo hàm truyền thống)*/
+        // Gọi hàm TRƯỚC khi định nghĩa -> Chạy bình thường
+        // console.log(calculateTotal(100, 0.1)); // 110
+        // function calculateTotal(price, taxRate) {
+        //     return price + price * taxRate;
+        // }
+
+        /*b. Function Expression (Biểu thức hàm)*/
+        // ❌ Gọi trước khi gán -> Gây lỗi ngay lập tức
+        // console.log(multiply(4, 5)); // Lỗi: Cannot access 'multiply' before initialization
+        // const multiply = function (a, b) {
+        //     return a * b;
+        // };
+        // // Gọi sau khi khai báo -> Hợp lệ
+        // console.log(multiply(4, 5)); // 20
+
+
+    </script>
+</body>
+
+</html>
