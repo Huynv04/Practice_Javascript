@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Học JS</title>
+</head>
+
+<body>
+    <h1>Mở F12 để xem Console</h1>
+
+    <script>
+        //vdu với constant 
+        // 1. Với kiểu nguyên thủy:
+        // const port = 5000;
+
+        // // Lưu ý: DÒNG NÀY PHẢI ĐƯỢC COMMENT LẠI
+        // // Nếu để "port = 300;" sẽ bị lỗi gán const và làm dừng toàn bộ code bên dưới!
+        // // port = 300;
+
+        // console.log("Port là:", port);
+
+        // // 2. Với Object / Array:
+        // const user = { name: "An", role: "Dev" };
+        // user.name = "Binh";
+        // user.age = 22;
+
+        // console.log("User là:", user);
+
+        //vdu vs Let: 
+        let score = 10;
+        score = 20; //  Cho phép gán lại
+
+        if (true) {
+            let tempMessage = "Đang trong khối if";
+            console.log(tempMessage); // In ra bình thường
+        }
+
+        // ❌ Ra ngoài khối {} biến không còn tồn tại:
+        // console.log(tempMessage); // Lỗi: ReferenceError: tempMessage is not defined
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+# Dấu # dùng để viết chú thích (comment)
+
+# 1. Bỏ qua toàn bộ một thư mục (kết thúc bằng dấu /)
+bin/
+obj/
+node_modules/
+.vs/
+dist/
+
+# 2. Bỏ qua theo định dạng đuôi file (dùng dấu *)
+*.log
+*.tmp
+*.user
+*.suo
+
+# 3. Bỏ qua file cấu hình nhạy cảm chứa secret / API key / database password
+.env
+.env.local
+appsettings.Development.json
+connectionStrings.json
+
+# 4. Ngoại lệ (thêm dấu ! phía trước để KHÔNG bỏ qua file đó)
+!important.log
