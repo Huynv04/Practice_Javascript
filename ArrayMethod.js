@@ -47,4 +47,4 @@ const totalPrice = products.reduce((total, item) => {
 }, 0); // 0 là giá trị khởi điểm của biến total
 
 console.log(totalPrice);
-// Kết quả: 1950 (1500 + 50 + 100 + 300+ 500)
+// Kết quả: 2450 (1500 + 50 + 100 + 300 + 500)

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="box" class="card">Nội dung cũ</div>
+    <script>
+        const box = document.querySelector("#box");
+
+        // 1. Đổi chữ bên trong
+        box.textContent = "Nội dung mới bằng textContent";
+
+        // 2. Chèn cả mã HTML vào trong thẻ
+        box.innerHTML = "<b>Nội dung in đậm</b> bằng innerHTML";
+
+        // 3. Thêm và xóa class CSS (giả sử bạn có sẵn class 'active' trong CSS)
+        box.classList.add("active");    // Thêm class active
+        box.classList.remove("card");   // Xóa bỏ class card cũ
+    </script>
+</body>
+
+</html>

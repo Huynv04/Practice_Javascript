@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- HTML -->
+    <ul id="fruit-list">
+        <li>Táo</li>
+        <li>Cam</li>
+        <li>Cherry</li>
+        <li>Quyt</li>
+        <li>Buoi</li>
+        <li>Chanh</li>
+    </ul>
+    <button id="add-btn">Thêm quả mới</button>
+    <script>
+        const list = document.querySelector("#fruit-list");
+        const btn = document.querySelector("#add-btn");
+
+        btn.addEventListener("click", () => {
+            // Bước 1: Tạo ra một thẻ <li> mới trong bộ nhớ
+            const newItem = document.createElement("li");
+
+            // Bước 2: Gán nội dung cho nó
+            newItem.textContent = "Dua le";
+
+            // Bước 3: Gắn thẻ <li> vừa tạo vào làm con của thẻ <ul> (list)
+            list.appendChild(newItem);
+
+            // (Mẹo xóa: Nếu muốn xóa ngay lập tức sau khi tạo, bạn gọi: newItem.remove();)
+        });
+    </script>
+</body>
+
+</html>

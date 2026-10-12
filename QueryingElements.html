@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- HTML -->
+    <h1 id="main-title">Xin chào</h1>
+    <p class="text-item">Dòng 1</p>
+    <p class="text-item">Dòng 2</p>
+    <script>
+        // 1. Lấy đúng 1 phần tử đầu tiên tìm thấy
+        const titleElement = document.querySelector("#main-title");
+        console.log(titleElement); // <h1 id="main-title">Xin chào</h1>
+
+        // 2. Lấy tất cả các thẻ có class là "text-item"
+        const allParagraphs = document.querySelectorAll(".text-item");
+        console.log(allParagraphs.length); // 2
+    </script>
+</body>
+
+</html>
