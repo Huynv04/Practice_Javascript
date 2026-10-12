@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // Mô phỏng hàm gọi API trả về một Promise
+        // const fetchUserData = () => {
+        //     return new Promise((resolve, reject) => {
+        //         setTimeout(() => {
+        //             resolve({ id: 1, name: "Nguyen Van A" });
+        //         }, 1000);
+        //     });
+        // };
+
+        // // --- CÁCH 1: Dùng Promise (.then / .catch) ---
+        // fetchUserData()
+        //     .then(user => {
+        //         console.log("Promise thành công:", user.name);
+        //     })
+        //     .catch(error => {
+        //         console.error("Lỗi:", error);
+        //     });
+
+        // // --- CÁCH 2: Dùng Async/Await (Chuẩn hiện đại, gọn gàng nhất) ---
+        // const getUserAsync = async () => {
+        //     try {
+        //         const user = await fetchUserData(); // Tạm dừng hàm này ở đây chờ dữ liệu về mà không chặn luồng chính
+        //         console.log("Async/Await thành công:", user.name);
+        //     } catch (error) {
+        //         console.error("Lỗi:", error);
+        //     }
+        // };
+
+        // getUserAsync();
+
+        //---------------------------------------------------------------------
+        //2. Bắt lỗi bất đồng bộ bằng try...catch
+        // const callBadApi = () => {
+        //     return new Promise((resolve, reject) => {
+        //         setTimeout(() => {
+        //             reject(new Error("Kết nối đến Server thất bại (500 Internal Server Error)!"));
+        //         }, 1000);
+        //     });
+        // };
+
+        // const handleApiRequest = async () => {
+        //     try {
+        //         console.log("Đang gọi API...");
+        //         const result = await callBadApi();
+        //         console.log("Kết quả:", result);
+        //     } catch (error) {
+        //         // Bắt gọn lỗi phát sinh ở đoạn await phía trên
+        //         console.log("⚠️ Đã bắt được lỗi:", error.message);
+        //     } finally {
+        //         console.log("Hoàn tất tiến trình gọi API (Luôn chạy dù thành công hay thất bại).");
+        //     }
+        // };
+
+        // handleApiRequest();
+        //---------------------------------------------------------------------
+        //3. Chạy song song nhiều tác vụ: Promise.all() vs Promise.allSettled()
+        const api1 = Promise.resolve("Dữ liệu Sản phẩm OK");
+        const api2 = Promise.reject("Lỗi kết nối API Banner"); // Giả sử API này tạch
+
+        // --- 1. DÙNG PROMISE.ALL (Sẽ bị lỗi văng ra catch ngay lập tức) ---
+        Promise.all([api1, api2])
+            .then(results => console.log("Promise.all thành công:", results))
+            .catch(err => console.log("❌ Promise.all bị hủy vì có 1 lỗi:", err));
+
+
+        // --- 2. DÙNG PROMISE.ALLSETTLED (Lấy trọn vẹn trạng thái từng cái) ---
+        Promise.allSettled([api1, api2])
+            .then(results => {
+                console.log("✅ Promise.allSettled trả về toàn bộ kết quả:");
+                results.forEach((res, index) => {
+                    if (res.status === "fulfilled") {
+                        console.log(`- Tác vụ ${index + 1} thành công:`, res.value);
+                    } else {
+                        console.log(`- Tác vụ ${index + 1} thất bại:`, res.reason);
+                    }
+                });
+            });
+
+    </script>
+</body>
+
+</html>

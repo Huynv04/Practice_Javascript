@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width='device-width', initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const createCounter = () => {
+            let count = 0; // Biến này thuộc phạm vi của hàm cha
+
+            return () => {
+                count++; // Hàm con bên trong "ôm lấy" (closure) biến count
+                console.log(`Số đếm hiện tại: ${count}`);
+            };
+        };
+
+        const myCounter = createCounter();
+        // Hàm cha createCounter đã chạy xong và kết thúc, nhưng biến count vẫn được giữ lại!
+
+        myCounter(); // Số đếm hiện tại: 1
+        myCounter(); // Số đếm hiện tại: 2
+        myCounter(); // Số đếm hiện tại: 3
+    </script>
+</body>
+
+</html>

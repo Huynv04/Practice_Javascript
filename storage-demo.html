@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo LocalStorage & SessionStorage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            line-height: 1.6;
+        }
+
+        .card {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background: #fdfdfd;
+        }
+
+        button {
+            padding: 8px 12px;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+
+        pre {
+            background: #eee;
+            padding: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Demo Lưu Trữ Dữ Liệu Trình Duyệt</h2>
+
+    <div class="card">
+        <h3>1. Lưu và Đọc Object với localStorage</h3>
+        <button id="saveBtn">Lưu User vào LocalStorage</button>
+        <button id="getBtn">Đọc User từ LocalStorage</button>
+        <button id="clearBtn">Xóa dữ liệu</button>
+        <pre id="result">Chưa có dữ liệu...</pre>
+    </div>
+
+    <script>
+        // Dữ liệu mẫu dạng Object cần lưu
+        const userProfile = {
+            id: 101,
+            username: "dotnet_dev",
+            role: "Full-Stack Trainee",
+            isDarkMode: true
+        };
+        // # trước id, . trước class
+        const resultBox = document.querySelector("#result");
+
+        // 1. Nút LƯU dữ liệu
+        document.querySelector("#saveBtn").addEventListener("click", () => {
+            // ⚠️ Phải dùng JSON.stringify để biến Object thành chuỗi trước khi lưu
+            const jsonString = JSON.stringify(userProfile);
+
+            localStorage.setItem("currentUser", jsonString);
+
+            resultBox.textContent = "✅ Đã lưu thành công Object vào localStorage!";
+        });
+
+        // 2. Nút ĐỌC dữ liệu
+        document.querySelector("#getBtn").addEventListener("click", () => {
+            // Lấy chuỗi JSON từ localStorage lên
+            const savedData = localStorage.getItem("currentUser");
+
+            if (!savedData) {
+                resultBox.textContent = "❌ Không tìm thấy dữ liệu nào trong localStorage!";
+                return;
+            }
+
+            // ⚠️ Phải dùng JSON.parse để dịch ngược chuỗi thành Object JavaScript
+            const parsedUser = JSON.parse(savedData);
+
+            // Hiển thị thông tin thuộc tính của Object vừa lấy ra
+            resultBox.textContent = `✅ Đã đọc dữ liệu thành công:\nTên đăng nhập: ${parsedUser.username}\nVai trò: ${parsedUser.role}`;
+        });
+
+        // 3. Nút XÓA dữ liệu
+        document.querySelector("#clearBtn").addEventListener("click", () => {
+            localStorage.removeItem("currentUser"); // Xóa riêng key "currentUser"
+            // Hoặc dùng: localStorage.clear(); để xóa toàn bộ
+            resultBox.textContent = "🗑️ Đã xóa dữ liệu khỏi localStorage!";
+        });
+    </script>
+
+</body>
+
+</html>

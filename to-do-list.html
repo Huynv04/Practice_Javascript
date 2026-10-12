@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Todo List</title>
+</head>
+
+<body>
+
+    <h2>Ứng dụng Todo List Đơn Giản</h2>
+
+    <!-- Form thêm công việc -->
+    <form id="todoForm">
+        <input type="text" id="todoInput" placeholder="Nhập việc cần làm..." autocomplete="off">
+        <button type="submit">Thêm</button>
+    </form>
+
+    <!-- Danh sách hiển thị -->
+    <ul id="todoList"></ul>
+
+    <script>
+        const todoForm = document.getElementById('todoForm');
+        const todoInput = document.getElementById('todoInput');
+        const todoList = document.getElementById('todoList');
+
+        // 1. Đọc dữ liệu từ localStorage (nếu có)
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+        // 2. Hàm lưu vào localStorage và vẽ lại giao diện
+        function saveAndRender() {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            render();
+        }
+
+        // 3. Hàm render giao diện từ mảng tasks
+        function render() {
+            todoList.innerHTML = tasks.map(task => `
+                <li>
+                    <input type="checkbox" class="toggle" data-id="${task.id}" ${task.completed ? 'checked' : ''}>
+                    <span style="${task.completed ? 'text-decoration: line-through; color: gray;' : ''}">
+                        ${task.text}
+                    </span>
+                    <button class="delete" data-id="${task.id}">Xóa</button>
+                </li>
+            `).join('');
+        }
+
+        // 4. Bắt sự kiện Thêm công việc mới
+        todoForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = todoInput.value.trim();
+            if (!text) return;
+
+            const newTask = {
+                id: Date.now(),
+                text: text,
+                completed: false
+            };
+
+            tasks.push(newTask);
+            todoInput.value = '';
+            saveAndRender();
+        });
+
+        // 5. Sử dụng Event Delegation để xử lý Xóa và Đánh dấu hoàn thành
+        todoList.addEventListener('click', (e) => {
+            const id = Number(e.target.dataset.id);
+            if (!id) return;
+
+            // Xóa task
+            if (e.target.classList.contains('delete')) {
+                tasks = tasks.filter(task => task.id !== id);
+                saveAndRender();
+            }
+
+            // Đổi trạng thái hoàn thành (Checkbox)
+            if (e.target.classList.contains('toggle')) {
+                tasks = tasks.map(task =>
+                    task.id === id ? { ...task, completed: !task.completed } : task
+                );
+                saveAndRender();
+            }
+        });
+
+        // Chạy render lần đầu khi tải trang
+        render();
+    </script>
+
+</body>
+
+</html>

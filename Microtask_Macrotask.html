@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        console.log("1. Bắt đầu");
+
+        setTimeout(() => {
+            console.log("4. setTimeout (Macrotask)");
+        }, 0);
+
+        Promise.resolve().then(() => {
+            console.log("3. Promise (Microtask)");
+        });
+
+        console.log("2. Kết thúc");
+
+        // Thứ tự in ra màn hình: 1 -> 2 -> 3 -> 4
+        // (Dù setTimeout để thời gian 0ms, Promise vẫn chạy trước vì nằm ở Microtask Queue!)
+    </script>
+</body>
+
+</html>

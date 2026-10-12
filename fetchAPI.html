@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Fetch API (GET, POST, PUT, DELETE)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            line-height: 1.6;
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 15px;
+            cursor: pointer;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #4338ca;
+        }
+
+        pre {
+            background: #1e293b;
+            color: #38bdf8;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            max-height: 350px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Demo Giao Tiếp Mạng với Fetch API</h2>
+        <p>Sử dụng Public API giả lập (JSONPlaceholder) để test:</p>
+
+        <div class="button-group">
+            <button id="getBtn">1. GET (Lấy dữ liệu)</button>
+            <button id="postBtn">2. POST (Tạo mới)</button>
+            <button id="putBtn">3. PUT (Cập nhật)</button>
+            <button id="deleteBtn">4. DELETE (Xóa)</button>
+        </div>
+
+        <h3>Kết quả phản hồi từ Server:</h3>
+        <pre id="output">Bấm vào các nút phía trên để gửi request...</pre>
+    </div>
+
+    <script>
+        const output = document.getElementById('output');
+        const BASE_URL = 'https://jsonplaceholder.typicode.com/posts';
+
+        // Hàm hỗ trợ hiển thị kết quả ra màn hình đẹp mắt
+        const showResult = (method, status, data) => {
+            output.textContent = `[HTTP Method: ${method}] - Status Code: ${status}\n\n` + JSON.stringify(data, null, 2);
+        };
+
+        // --- 1. GET REQUEST (Lấy thông tin bài viết có id = 1) ---
+        document.getElementById('getBtn').addEventListener('click', async () => {
+            try {
+                // Có thể truyền URL params dạng: `${BASE_URL}?userId=1`
+                const response = await fetch(`${BASE_URL}/1`);
+
+                // ⚠️ BẮT BUỘC KIỂM TRA RESPONSE.OK (Chặn các mã lỗi 404, 500...)
+                if (!response.ok) {
+                    throw new Error(`Lỗi HTTP! Mã trạng thái: ${response.status}`);
+                }
+
+                const data = await response.json();
+                showResult('GET', response.status, data);
+            } catch (error) {
+                output.textContent = `❌ Lỗi kết nối GET: ${error.message}`;
+            }
+        });
+
+        // --- 2. POST REQUEST (Gửi dữ liệu tạo mới bài viết) ---
+        document.getElementById('postBtn').addEventListener('click', async () => {
+            try {
+                const newPost = {
+                    title: 'Lập trình Full-Stack ASP.NET Core & React',
+                    body: 'Học cách kết nối Frontend với Backend thông qua RESTful API.',
+                    userId: 1
+                };
+
+                const response = await fetch(BASE_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json; charset=UTF-8',
+                        // 'Authorization': 'Bearer YOUR_JWT_TOKEN_HERE' // Ví dụ đính kèm Token bảo mật
+                    },
+                    body: JSON.stringify(newPost) // Chuyển Object thành chuỗi JSON
+                });
+
+                if (!response.ok) throw new Error(`Lỗi HTTP! Mã trạng thái: ${response.status}`);
+
+                const data = await response.json();
+                showResult('POST (Created)', response.status, data);
+            } catch (error) {
+                output.textContent = `❌ Lỗi kết nối POST: ${error.message}`;
+            }
+        });
+
+        // --- 3. PUT REQUEST (Cập nhật toàn bộ bài viết có id = 1) ---
+        document.getElementById('putBtn').addEventListener('click', async () => {
+            try {
+                const updatedPost = {
+                    id: 1,
+                    title: 'Tiêu đề bài viết đã được sửa đổi mới!',
+                    body: 'Nội dung cập nhật mới hoàn toàn.',
+                    userId: 1
+                };
+
+                const response = await fetch(`${BASE_URL}/1`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json; charset=UTF-8'
+                    },
+                    body: JSON.stringify(updatedPost)
+                });
+
+                if (!response.ok) throw new Error(`Lỗi HTTP! Mã trạng thái: ${response.status}`);
+
+                const data = await response.json();
+                showResult('PUT (Updated)', response.status, data);
+            } catch (error) {
+                output.textContent = `❌ Lỗi kết nối PUT: ${error.message}`;
+            }
+        });
+
+        // --- 4. DELETE REQUEST (Xóa bài viết có id = 1) ---
+        document.getElementById('deleteBtn').addEventListener('click', async () => {
+            try {
+                const response = await fetch(`${BASE_URL}/1`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) throw new Error(`Lỗi HTTP! Mã trạng thái: ${response.status}`);
+
+                // Thường API Delete thành công trả về object rỗng {} hoặc status 204 (No Content)
+                const data = await response.json();
+                showResult('DELETE (Success)', response.status, {
+                    message: "Đã xóa bản ghi thành công trên Server!",
+                    serverEcho: data
+                });
+            } catch (error) {
+                output.textContent = `❌ Lỗi kết nối DELETE: ${error.message}`;
+            }
+        });
+    </script>
+
+</body>
+
+</html>
